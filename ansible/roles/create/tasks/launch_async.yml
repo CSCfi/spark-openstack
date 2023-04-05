@@ -1,10 +1,10 @@
 ---
 
   - name: initialize security group
-    include: create_security_group.yml
+    include_tasks: create_security_group.yml
 
   - name: Create master instance
-    os_server:
+    openstack.cloud.server:
       state: present
       name: "{{ cluster_name }}-master"
       image: "{{ os_image }}"
@@ -21,7 +21,7 @@
     register: master_waitress
 
   - name: Create slave instances
-    os_server:
+    openstack.cloud.server:
       state: present
       name: "{{ item }}"
       image: "{{ os_image }}"

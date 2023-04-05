@@ -11,7 +11,7 @@ import os
 import urllib
 from zipfile import ZipFile
 from shutil import rmtree
-import urlparse
+from urllib.parse import urlparse
 
 
 spark_versions = \
@@ -83,7 +83,7 @@ parser.add_argument("--spark-version", default="1.6.2", help="Spark version to u
 parser.add_argument("--hadoop-version", help="Hadoop version to use")
 parser.add_argument("--boot-from-volume", default=False, help="Should the cluster be based on Cinder volumes. "
                                                               "Use it wisely")
-parser.add_argument("--hadoop-user", default="cloud-user", help="User to use/create for cluster members")
+parser.add_argument("--hadoop-user", default="ubuntu", help="User to use/create for cluster members")
 parser.add_argument("--ansible-bin", help="path to ansible (and ansible-playbook, default='')")
 parser.add_argument("--swift-username", help="Username for Swift object storage. If not specified, swift integration "
                                              "is commented out in core-site.xml. You can also use OS_SWIFT_USERNAME"
@@ -108,8 +108,10 @@ parser.add_argument("--deploy-cassandra", action='store_true', help="Should we d
 parser.add_argument("--cassandra-version", default="3.11.4", help="Apache Cassandra version to use")
 parser.add_argument("--skip-packages", action='store_true',
                     help="Skip package installation (Java, rsync, etc). Image must contain all required packages.")
-parser.add_argument("--async", action="store_true",
-                    help="Async Openstack operations (may not work with some Openstack environments)")
+parser.add_argument("--sync", action="store_true",
+                    help="Sync Openstack operations (may not work with some Openstack environments)")
+# parser.add_argument("--async", action="store_true",
+#                     help="Async Openstack operations (may not work with some Openstack environments)")
 parser.add_argument("--tags", help="Ansible: run specified tags")
 parser.add_argument("--skip-tags", help="Ansible: skip specified tags")
 
@@ -241,7 +243,9 @@ def make_extra_vars():
 
     extra_vars["skip_packages"] = args.skip_packages
 
-    extra_vars["sync"] = "async" if args.async else "sync"
+    extra_vars["sync"] = "sync" if args.sync else "async"
+
+    # extra_vars["sync"] = "async" if args.async else "sync"
 
     if args.extra_jars is None:
         args.extra_jars = []
@@ -325,7 +329,7 @@ def get_ip(role):
 def ssh_output(host, cmd):
     return subprocess.check_output(["ssh", "-q", "-t", "-o", "StrictHostKeyChecking=no",
                                     "-o", "UserKnownHostsFile=/dev/null",
-                                    "-i", args.identity_file, "cloud-user@" + host, cmd])
+                                    "-i", args.identity_file, "ubuntu@" + host, cmd])
 
 def ssh_first_slave(master_ip, cmd):
     #can't do `head -n1 /opt/spark/conf/slaves` since it's not deployed yet

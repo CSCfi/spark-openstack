@@ -45,7 +45,7 @@
         seconds: 10
 
     - name: Register runner facts
-      os_server_facts:
+      openstack.cloud.server_info:
         filters:
           metadata:
             hostname: "{{ cluster_name }}-runner"

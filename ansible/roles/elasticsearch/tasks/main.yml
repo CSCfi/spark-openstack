@@ -1,19 +1,19 @@
 ---
-- include: install.yml
+- import_tasks: install.yml
   when: not restart|default(False)
   tags:
   - install
   - elastic
   - elastic_install
 
-- include: config.yml
+- import_tasks: config.yml
   when: not restart|default(False)
   tags:
     - install
     - elastic
     - elastic_install
 
-- include: start.yml
+- import_tasks: start.yml
   when: not restart|default(False)
   tags:
     - start
@@ -21,7 +21,7 @@
     - elastic_start
 
 
-- include: restart.yml
+- import_tasks: restart.yml
   when: restart|default(False)
   tags:
   - restart
@@ -31,7 +31,7 @@
     elastic_completed: true
 
 
-#- include: config.yml
+#- import_tasks: config.yml
 #  tags:
 #    - install
 #    - elastic
@@ -39,14 +39,14 @@
 #    - elastic_config
 
 #
-#- include: plugins.yml
+#- import_tasks: plugins.yml
 #  tags:
 #    - install
 #    - elastic
 #    - elastic_install
 #    - elastic_plugins
 
-#- include: start.yml
+#- import_tasks: start.yml
 #  when: not restart|default(False)
 #  tags:
 #  - start
@@ -55,7 +55,7 @@
 #  - set_fact:
 #    elastic_completed: true
 
-#- include: restart.yml
+#- import_tasks: restart.yml
 #  when: restart|default(False)
 #  tags:
 #  - restart

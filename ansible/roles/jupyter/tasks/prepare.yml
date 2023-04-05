@@ -34,10 +34,10 @@
       dest=/tmp/
   - name: install pip
     raw: "{{apt_pkg_pref}} /tmp/get-pip.py"
-    become: yes
+    become: True
 
   - name: install setuptools
-    become: yes
+    become: True
     shell: "wget https://bootstrap.pypa.io/ez_setup.py -O - | python"
 
     #looks like pyparsing==2.1.2 does not work on python 3 (AttributeError: 'tuple' object has no attribute 'filename')
@@ -47,7 +47,7 @@
 #    when: python_version|int == 3
 
   - name: install pip packages
-    become: yes
+    become: True
     pip:
       name:
         - jupyter

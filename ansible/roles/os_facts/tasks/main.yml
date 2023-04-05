@@ -1,7 +1,7 @@
 ---
 
 - name: Register master facts
-  os_server_facts:
+  openstack.cloud.server_info:
     filters:
       metadata:
         group: "{{ item }}"
@@ -23,7 +23,7 @@
 
 
 - name: Register slaves facts
-  os_server_facts:
+  openstack.cloud.server_info:
     filters:
       metadata:
         group: "{{ item }}"

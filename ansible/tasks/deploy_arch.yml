@@ -3,7 +3,7 @@
 
 - block:
   - name: "get {{deparch_file}} to {{deparch_dest}}"
-    become: no
+    become: False
     local_action: get_url url={{ deparch_download_url }} dest={{deparch_dest}}/
 
   - name: distribute {{deparch_file}} among slaves

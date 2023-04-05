@@ -21,6 +21,6 @@
     line="export PATH=$PATH:{{ hadoop_home }}/bin/:{{ spark_home }}/bin/"
     create=true
 
-- include: tasks/stop_all.yml
+- import_tasks: tasks/stop_all.yml
 
-- include: tasks/start_all.yml
+- import_tasks: tasks/start_all.yml

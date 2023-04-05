@@ -4,7 +4,7 @@
   gather_facts: no
   tasks:
     - name: Register master facts
-      os_server_facts:
+      openstack.cloud.server_info:
         filters:
           metadata:
             group: "{{ cluster_name }}_{{ extended_role }}"

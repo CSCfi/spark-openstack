@@ -1,7 +1,7 @@
 ---
 
 - name: copy Cassandra config
-  become: yes
+  become: True
   template: src=cassandra.yaml.j2 dest="/opt/{{ cassandra_dir}}/conf/cassandra.yaml"
 
 - name: set user and priviliges on Cassandra

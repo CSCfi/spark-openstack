@@ -1,29 +1,29 @@
 ---
-- include: install.yml
+- ansible.builtin.import_tasks: install.yml
   when: not restart|default(False)
   tags:
   - install
   - cassandra
   - cassandra_install
 
-- include: config.yml
-  become: yes
+- ansible.builtin.import_tasks: config.yml
+  become: True
   tags:
   - install
   - cassandra
   - cassandra_install
   - cassandra_config
 
-- include: start.yml
-  become: yes
+- ansible.builtin.import_tasks: start.yml
+  become: True
   when: not restart|default(False)
   tags:
   - start
   - cassandra
   - cassandra_start
 
-- include: restart.yml
-  become: yes
+- ansible.builtin.import_tasks: restart.yml
+  become: True
   when: restart|default(False)
   tags:
   - restart

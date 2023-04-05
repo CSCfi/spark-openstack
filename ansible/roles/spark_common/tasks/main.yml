@@ -32,22 +32,22 @@
 
 - debug: var=spark_md5
 
-- include: tasks/prepare_spark.yml
-  become: yes
+- import_tasks: tasks/prepare_spark.yml
+  become: True
   become_user: root
   when: spark_common_completed is undefined
   tags:
   - install
   - spark_install
 
-- include: detect_conf.yml
+- import_tasks: detect_conf.yml
   when: detect_conf
 
-- include: detect_java_home.yml
+- import_tasks: detect_java_home.yml
   when: spark_common_completed is undefined
 
-- include: as_root.yml
-  become: yes
+- import_tasks: as_root.yml
+  become: True
   become_user: root
   when: spark_common_completed is undefined and not skip_spark_setup|default(False)
   tags:

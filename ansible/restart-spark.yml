@@ -10,7 +10,7 @@
   roles:
     - { role: spark_common, detect_conf: True }
   tasks:
-    - include: tasks/stop_all.yml
+    - import_tasks: tasks/stop_all.yml
 
 - hosts: "{{ cluster_name }}_master:{{ cluster_name }}_slaves"
   become: True
@@ -30,4 +30,4 @@
   roles:
     - { role: spark_common, detect_conf: True }
   tasks:
-    - include: tasks/start_all.yml
+    - import_tasks: tasks/start_all.yml
