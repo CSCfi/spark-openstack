@@ -55,25 +55,25 @@
   tags: prepare
 
 - name: deploy authorized keys
-  become: yes
+  become: True
   become_user: root
   authorized_key: user={{ hadoop_user }} key={{ lookup('file', 'files/keys/{{ cluster_name }}.pub') }}
   tags: prepare
 
 - name: deploy ssh-keys
-  become: yes
+  become: True
   become_user: root
   copy: src="files/keys/{{ cluster_name }}" dest="/home/{{ hadoop_user }}/.ssh/{{ cluster_name }}"
   tags: prepare
 
 - name: distribute ssh config
-  become: yes
+  become: True
   become_user: root
   template: src=templates/config.j2 dest="/home/{{ hadoop_user }}/.ssh/config"
   tags: prepare
 
 - name: modify /etc/hosts
-  become: yes
+  become: True
   become_user: root
   lineinfile: dest=/etc/hosts state=present line="{{ hostvars[item].openstack.private_v4 }} {{ hostvars[item].openstack.name }}"
   with_items: "{{ play_hosts }}"
