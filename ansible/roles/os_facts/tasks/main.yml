@@ -5,6 +5,7 @@
     filters:
       metadata:
         group: "{{ item }}"
+  register: master
   with_items:
     - "{{ cluster_name }}_master"
 
@@ -12,14 +13,12 @@
   add_host:
     name: "{{ item.name }}"
     groups: "{{ cluster_name }}_master"
-    ansible_host: "{{ item.public_v4  if item.public_v4 != '' else item.private_v4 }}"
-    ansible_ssh_host: "{{ item.interface_ip if item.interface_ip != '' else item.private_v4 }}"
+    ansible_host: "{{ item.access_ipv4 if item.access_ipv4 != '' else item.addresses.project_2001316[0].addr }}"
     ansible_user: "ubuntu"
-    openstack: "{{ item }}"
+    openstack: "{{ item.id }}"
   with_items:
-    - "{{ openstack_servers }}"
+    - "{{ master.results[0].servers }}"
 
-- debug: var=openstack
 
 
 - name: Register slaves facts
@@ -27,6 +26,7 @@
     filters:
       metadata:
         group: "{{ item }}"
+  register: slave
   with_items:
     - "{{ cluster_name }}_slaves"
 
@@ -34,9 +34,8 @@
   add_host:
     name: "{{ item.name }}"
     groups: "{{ cluster_name }}_slaves"
-    ansible_host: "{{ item.public_v4  if item.public_v4 != '' else item.private_v4 }}"
-    ansible_ssh_host: "{{ item.interface_ip if item.interface_ip != '' else item.private_v4 }}"
+    ansible_host: "{{ item.access_ipv4  if item.access_ipv4 != '' else item.addresses.project_2001316[0].addr }}"
     ansible_user: "ubuntu"
-    openstack: "{{ item }}"
+    openstack: "{{ item.id }}"
   with_items:
-    - "{{ openstack_servers }}"
+    - "{{ slave.results[0].servers }}"
