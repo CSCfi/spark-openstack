@@ -1,7 +1,7 @@
 ---
 
 - name: acknowledge existing servers
-  os_server_facts:
+  openstack.cloud.server_info:
 
 - name: debug
   set_fact: alive_servers="{{ alive_servers | default([]) | union([item.name]) }}"
@@ -11,7 +11,6 @@
 
 - name: The following instances will be destroyed now
   debug: var=alive_servers
-
 
 - name: destroy cluster instances
   os_server:
@@ -23,7 +22,6 @@
   poll: 0
   register: destruction_waitress
 
-
 - name: 'Checking cluster is dead'
   async_status: jid={{ item.ansible_job_id }}
   register: slv
@@ -32,4 +30,4 @@
   with_items: "{{ destruction_waitress.results }}"
 
 - name: destroy security group
-  include: destroy_security_group.yml
+  include_tasks: destroy_security_group.yml
