@@ -324,7 +324,7 @@ def get_ip(role):
     res = subprocess.check_output([ansible_playbook_cmd,
                                    "--extra-vars", repr(vars),
                                    "get_ip.yml"])
-    return parse_host_ip(res)
+    return parse_host_ip(res.decode())
 
 def ssh_output(host, cmd):
     return subprocess.check_output(["ssh", "-q", "-t", "-o", "StrictHostKeyChecking=no",
