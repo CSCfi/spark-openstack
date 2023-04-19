@@ -25,7 +25,7 @@
         remote_ip_prefix: 0.0.0.0/0
 
     - name: create an instance
-      os_server:
+      openstack.cloud.server:
         name: "{{ cluster_name }}-runner"
         state: present
         image: "{{ os_image }}"
@@ -49,17 +49,18 @@
         filters:
           metadata:
             hostname: "{{ cluster_name }}-runner"
+      register: runner
+    - debug: msg="{{ runner }}"
 
     - name: Make up inventory
       add_host:
         name: "{{ item.name }}"
         groups: "{{ cluster_name }}_runner"
-        ansible_host: "{{ item.public_v4 }}"
-        ansible_ssh_host: "{{ item.interface_ip }}"
+        ansible_host: "{{ item.access_ipv4 }}"
         ansible_user: "ubuntu"
-        openstack: "{{ item }}"
+        openstack: "{{ item.id }}"
       with_items:
-        - "{{ openstack_servers }}"
+        - "{{ runner.servers }}"
 
 - hosts: "{{ cluster_name }}_runner"
   become: yes

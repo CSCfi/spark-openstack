@@ -1,0 +1,22 @@
+---
+- name: Just a test
+  hosts: localhost
+  tasks:
+
+    # - name: Get info
+    #   openstack.cloud.server_info:
+    #   register: result
+    # - name: Debug
+    #   ansible.builtin.debug:
+    #     msg: "{{ result.servers }}"
+
+
+    - name: Create master instance
+      openstack.cloud.server:
+        state: present
+        name: "ansible-playbook"
+        image: "07c6f4c1-97ae-481e-abfb-e799ec52caf7"
+        flavor: "standard.tiny"
+        key_name: "tristan-perard"
+        network: "c55bc796-841f-4704-a1a2-8f29bb9a699a"
+        auto_ip: false

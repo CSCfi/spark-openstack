@@ -79,10 +79,6 @@
 
 - openstack.cloud.security_group_rule:
     security_group: "{{ cluster_name }}"
-    protocol: any
-    remote_group: "{{ cluster_name }}"
-
-- openstack.cloud.security_group_rule:
-    security_group: "{{ cluster_name }}"
+    ethertype: IPv6
     protocol: any
     remote_group: "{{ cluster_name }}"
