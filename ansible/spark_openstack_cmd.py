@@ -316,7 +316,7 @@ def get_master_ip():
     res = subprocess.check_output([ansible_playbook_cmd,
                                    "--extra-vars", repr(vars),
                                    "get_ip.yml"])
-    return parse_host_ip(res)
+    return parse_host_ip(res.decode())
 
 def get_ip(role):
     vars = make_extra_vars()
