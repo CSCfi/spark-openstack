@@ -7,6 +7,6 @@
       openstack.cloud.server_info:
         filters:
           metadata:
-            group: "{{ cluster_name }}_{{ extended_role }}"
+            group: "{{ cluster_name }}_master"
       register: master
     - debug: msg="{{ master.servers[0].access_ipv4 }}"
