@@ -13,7 +13,7 @@
       network: "{{ virtual_network }}"
       boot_from_volume: "{{ boot_from_volume }}"
       security_groups: "{{ cluster_name }}"
-      auto_ip: False
+      auto_ip: false
       meta: "hostname={{ cluster_name }}-master,group={{ cluster_name }}_master"
     retries: 3
     async: 300
@@ -54,45 +54,45 @@
     delay: 5
     with_items: "{{ slave_waitress.results }}"
 
-#  - name: 'Acquiring floating IPs for master instance'
-#   os_floating_ip:
-#     state: present
-#      reuse: yes
-#      server: "{{ cluster_name }}-master"
-#      network: "{{ floating_ip_pool }}"
-#      wait: True
-#      timeout: 60
-#    delay: 1
-#    retries: 3
-#    async: 60
-#    poll: 0
-#    register: master_ip_waitress
-#
-#  - name: 'Acquiring floating IPs for slave instances'
-#    os_floating_ip:
-#      state: present
-#      reuse: yes
-#      server: "{{ item }}"
-#      network: "{{ floating_ip_pool }}"
-#      wait: True
-#      timeout: 20
-#    with_sequence: start=1 end={{ n_slaves }} format={{ cluster_name }}-slave-%d
-#    retries: 3
-#    delay: 1
-#    async: 60
-#    poll: 0
-#    register: slave_ip_waitress
-#
-#  - name: 'Waiting for IP'
-#    register: mstr
-#    until: mstr.finished
-#    retries: 60
-#    delay: 1
+  - name: 'Acquiring floating IPs for master instance'
+    openstack.cloud.floating_ip:
+      state: present
+      reuse: yes
+      server: "{{ cluster_name }}-master"
+      network: "{{ floating_ip_pool }}"
+      wait: True
+      timeout: 60
+    delay: 1
+    retries: 3
+    async: 60
+    poll: 0
+    register: master_ip_waitress
 
-#  - name: 'Waiting for IP'
-#    async_status: jid={{ item.ansible_job_id }}
-#    register: slv
-#    until: slv.finished
-#    retries: 60
-#    delay: 1
-#    with_items: "{{ slave_ip_waitress.results }}"
+  - name: 'Acquiring floating IPs for slave instances'
+    openstack.cloud.floating_ip:
+      state: present
+      reuse: yes
+      server: "{{ item }}"
+      network: "{{ floating_ip_pool }}"
+      wait: True
+      timeout: 20
+    with_sequence: start=1 end={{ n_slaves }} format={{ cluster_name }}-slave-%d
+    retries: 3
+    delay: 1
+    async: 60
+    poll: 0
+    register: slave_ip_waitress
+
+  # - name: 'Waiting for IP'
+  #   register: mstr
+  #   until: mstr.finished
+  #   retries: 60
+  #   delay: 1
+
+  # - name: 'Waiting for IP'
+  #   async_status: jid={{ item.ansible_job_id }}
+  #   register: slv
+  #   until: slv.finished
+  #   retries: 60
+  #   delay: 1
+  #   with_items: "{{ slave_ip_waitress.results }}"
