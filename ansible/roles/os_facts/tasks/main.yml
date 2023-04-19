@@ -13,7 +13,7 @@
   add_host:
     name: "{{ item.name }}"
     groups: "{{ cluster_name }}_master"
-    ansible_host: "{{ item.access_ipv4 if item.access_ipv4 != '' else item.addresses.project_2001316[0].addr }}"
+    ansible_host: "{{ item.access_ipv4 }}"
     ansible_user: "ubuntu"
     openstack: "{{ item.id }}"
   with_items:
@@ -34,7 +34,7 @@
   add_host:
     name: "{{ item.name }}"
     groups: "{{ cluster_name }}_slaves"
-    ansible_host: "{{ item.access_ipv4  if item.access_ipv4 != '' else item.addresses.project_2001316[0].addr }}"
+    ansible_host: "{{ item.access_ipv4 }}"
     ansible_user: "ubuntu"
     openstack: "{{ item.id }}"
   with_items:
