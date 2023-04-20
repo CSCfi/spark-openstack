@@ -83,16 +83,17 @@
     poll: 0
     register: slave_ip_waitress
 
-  # - name: 'Waiting for IP'
-  #   register: mstr
-  #   until: mstr.finished
-  #   retries: 60
-  #   delay: 1
+  - name: 'Waiting for IP'
+    async_status: jid={{ master_ip_waitress.ansible_job_id }}
+    register: mstr
+    until: mstr.finished
+    retries: 60
+    delay: 1
 
-  # - name: 'Waiting for IP'
-  #   async_status: jid={{ item.ansible_job_id }}
-  #   register: slv
-  #   until: slv.finished
-  #   retries: 60
-  #   delay: 1
-  #   with_items: "{{ slave_ip_waitress.results }}"
+  - name: 'Waiting for IP'
+    async_status: jid={{ item.ansible_job_id }}
+    register: slv
+    until: slv.finished
+    retries: 60
+    delay: 1
+    with_items: "{{ slave_ip_waitress.results }}"
