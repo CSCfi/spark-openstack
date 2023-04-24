@@ -28,61 +28,75 @@
     file: group_vars/all/oracle.yml
   when: use_oracle_java|default(False)
 
-- name: install python
-  become: yes
-  apt:
-    name: python
-    update_cache: yes
+# - name: install python
+#   become: true
+#   apt:
+#     name: python
+#     update_cache: yes
 
 - name: update apt cache
-  become: yes
+  become: true
   apt: update_cache=yes
   when: not skip_packages|default(False)
   retries: 2
 
 - name: install packages
-  become: yes
+  become: true
   package: name={{ item }} state=present
   with_items: "{{ ubuntu_packages }}"
   when: not skip_packages|default(False)
 
 - name: install Java
-  become: yes
+  become: true
   package: name={{ java_package }} state=present
   when: not skip_packages|default(False)
 
 
 
 - name: disable net.ipv6.conf.all.disable_ipv6
-  become: yes
+  become: true
   sysctl: name=net.ipv6.conf.all.disable_ipv6 value=1 state=present
   tags:
     - prepare
 
 - name: disable net.ipv6.conf.lo.disable_ipv6
-  become: yes
+  become: true
   sysctl: name=net.ipv6.conf.lo.disable_ipv6 value=1 state=present
   tags:
     - prepare
 
 - name: increase hard file limits
-  become: yes
+  become: true
   pam_limits: domain=* limit_type=hard limit_item=nofile value=1000000
   tags:
     - prepare
 
 - name: increase soft file limits
-  become: yes
+  become: true
   pam_limits: domain=* limit_type=soft limit_item=nofile value=1000000
 
+# - name: create hadoop group
+#   become: true
+#   group: name=hadoop state=present
+#   tags:
+#     - prepare
+
+# - name: create hadoop user
+#   become: true
+#   user: name={{ hadoop_user }} comment="Hadoop user" group=hadoop shell=/bin/bash
+#   tags:
+#     - prepare
+
 - name: create hadoop group
-  become: yes
-  group: name=hadoop state=present
-  tags:
-    - prepare
+  tags: [prepare]
+  ansible.builtin.group:
+    name: hadoop
+    state: present
 
 - name: create hadoop user
-  become: yes
-  user: name={{ hadoop_user }} comment="Hadoop user" group=hadoop shell=/bin/bash
-  tags:
-    - prepare
+  tags: [prepare]
+  ansible.builtin.user:
+    name: "{{ hadoop_user }}"
+    shell: /bin/bash
+    comment: Hadoop user
+    group: hadoop
