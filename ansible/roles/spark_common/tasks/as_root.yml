@@ -20,6 +20,12 @@
 - name: deploy slaves configuration
   template: src=templates/slaves.j2 dest={{ spark_home }}/conf/slaves
 
+# - name: Check
+#   debug:
+#     var: hostvars[cluster_name + '_master']
+
+# - pause:
+
 - name: deploy spark-env.sh configuration
   template: src=templates/spark-env.sh.j2 dest={{ spark_home }}/conf/spark-env.sh owner={{ hadoop_user }} group=hadoop
 

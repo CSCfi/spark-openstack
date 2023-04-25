@@ -14,7 +14,7 @@
     - start
 
 - name: start spark master
-  shell: SPARK_MASTER_IP="{{ hostvars[inventory_hostname].openstack.private_v4 }}" /opt/spark/sbin/start-master.sh
+  shell: SPARK_MASTER_IP="{{ hostvars[inventory_hostname].ansible_default_ipv4.address }}" /opt/spark/sbin/start-master.sh
   when: not use_yarn
   tags:
     - start
