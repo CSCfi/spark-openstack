@@ -16,6 +16,7 @@ from urllib.parse import urlparse
 
 spark_versions = \
     {
+        "3.4.0": {"hadoop_versions": ["3.3"]},
         "2.3.0": {"hadoop_versions": ["2.6", "2.7"]},
         "2.2.1": {"hadoop_versions": ["2.6", "2.7"]},
         "2.2.0": {"hadoop_versions": ["2.6", "2.7"]},
@@ -79,7 +80,7 @@ parser.add_argument("--use-oracle-java", action="store_true", help="Use Oracle J
 parser.add_argument("--spark-worker-mem-mb", type=int, help="force worker memory value in megabytes (e.g. 14001)")
 parser.add_argument("-j", "--deploy-jupyter", action='store_true', help="Should we deploy jupyter on master node.")
 parser.add_argument("-jh", "--deploy-jupyterhub",action='store_true', help="Should we deploy jupyterHub on master node")
-parser.add_argument("--spark-version", default="1.6.2", help="Spark version to use")
+parser.add_argument("--spark-version", default="3.4.0", help="Spark version to use")
 parser.add_argument("--hadoop-version", help="Hadoop version to use")
 parser.add_argument("--boot-from-volume", default=False, help="Should the cluster be based on Cinder volumes. "
                                                               "Use it wisely")

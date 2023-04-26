@@ -10,11 +10,14 @@
 
 # it would be reasonable to use sha1 for crossplatform, but Spark doesn't provide sha1 checksum.
 - name: extract Hadoop checksum from file
-  set_fact: hadoop_md5="{{ lookup('file', hadoop_arch_checksum) | regex_search('.*MD5.*') | regex_replace('.*MD5 = (.*)', '\\1' ) |  replace(' ', '') }}"
+  set_fact: hadoop_sha512="{{ lookup('file', hadoop_arch_checksum) | regex_replace('.*SHA512.+ ', '' ) |  replace(' ', '') }}"
+  #set_fact: hadoop_md5="{{ lookup('file', hadoop_arch_checksum) | regex_search('.*MD5.*') | regex_replace('.*MD5 = (.*)', '\\1' ) |  replace(' ', '') }}"
   when: " hadoop_version != 'cdh4'"
   tags:
   - install
   - spark_install
+
+- debug: var=hadoop_sha512
 
 - name: get Spark distro checksum
   local_action: get_url url={{ spark_checksum_url }} dest=files/
@@ -25,12 +28,13 @@
 
 # it would be reasonable to use sha1 for crossplatform, but Spark doesn't provide sha1 checksum.
 - name: extract Spark distro checksum from file
-  set_fact: spark_md5="{{ lookup('file', spark_arch_checksum) | regex_replace('.*tgz:(.*)', '\\1' ) |  replace(' ', '') }}"
+  set_fact: spark_sha512="{{ lookup('file', spark_arch_checksum) | regex_replace('  spark.*', '') |  replace(' ', '') }}"
+  #set_fact: spark_md5="{{ lookup('file', spark_arch_checksum) | regex_replace('.*tgz:(.*)', '\\1' ) |  replace(' ', '') }}"
   tags:
   - install
   - spark_install
 
-- debug: var=spark_md5
+- debug: var=spark_sha512
 
 - import_tasks: tasks/prepare_spark.yml
   become: True

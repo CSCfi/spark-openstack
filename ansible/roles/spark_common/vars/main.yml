@@ -37,6 +37,13 @@ hadoop_vars:
     suffix: "hadoop2.7"
     swift_lib_url: False
     swift_lib_name: False
+  "3.3":
+    url: "http://archive.apache.org/dist/hadoop/common/hadoop-3.3.5/hadoop-3.3.5.tar.gz"
+    archived_name: "hadoop-3.3.5.tar.gz"
+    folder_name: "hadoop-3.3.5"
+    suffix: "hadoop3"
+    swift_lib_url: False
+    swift_lib_name: False
   "cdh4":
     url: "https://archive.cloudera.com/cdh4/cdh/4/hadoop-2.0.0-cdh4.7.1.tar.gz"
     archived_name: "hadoop-2.0.0-cdh4.7.1.tar.gz"
@@ -47,16 +54,20 @@ hadoop_vars:
 
 
 spark_download_url: "{{ spark_download_base_url }}spark-{{ spark_version }}/spark-{{ spark_version }}-bin-{{ hadoop_vars[hadoop_version]['suffix'] }}.tgz"
-spark_checksum_url: "{{ spark_download_url }}.md5"
+spark_checksum_url: "{{ spark_download_url }}.sha512"
+#spark_checksum_url: "{{ spark_download_url }}.md5"
 spark_arch: "files/spark-{{ spark_version }}-bin-{{ hadoop_vars[hadoop_version]['suffix'] }}.tgz"
-spark_arch_checksum: "{{ spark_arch }}.md5"
+spark_arch_checksum: "{{ spark_arch }}.sha512"
+#spark_arch_checksum: "{{ spark_arch }}.md5"
 spark_file: "spark-{{ spark_version }}-bin-{{ hadoop_vars[hadoop_version]['suffix'] }}"
 spark_home: "/opt/{{ spark_file }}"
 
 hadoop_download_url: "{{ hadoop_vars[hadoop_version]['url'] }}"
-hadoop_checksum_url: "{{ hadoop_download_url }}.mds"
+#hadoop_checksum_url: "{{ hadoop_download_url }}.mds"
+hadoop_checksum_url: "{{ hadoop_download_url }}.sha512"
 hadoop_arch: "files/{{ hadoop_vars[hadoop_version]['archived_name'] }}"
-hadoop_arch_checksum: "{{ hadoop_arch }}.mds"
+hadoop_arch_checksum: "{{ hadoop_arch }}.sha512"
+#hadoop_arch_checksum: "{{ hadoop_arch }}.mds"
 hadoop_file: "{{ hadoop_vars[hadoop_version]['folder_name'] }}"
 hadoop_home: "/usr/local/{{ hadoop_file }}"
 

@@ -37,10 +37,10 @@
   tags: prepare
   when: floating_ip_pool == 'None'
 
-- name: install Python 2 if missing
-  raw: test -e /usr/bin/python2 || (sudo apt -y update && sudo apt install -y python2-minimal)
-  delay: 10
-  tags: prepare
+# - name: install Python 2 if missing
+#   raw: test -e /usr/bin/python2 || (sudo apt -y update && sudo apt install -y python2-minimal)
+#   delay: 10
+#   tags: prepare
 
 - name: generating key for hadoop user
   user: name={{ hadoop_user }} generate_ssh_key=yes

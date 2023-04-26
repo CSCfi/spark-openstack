@@ -1,14 +1,19 @@
 ---
 
-- name: get Hadoop distro (except CDH4)
-  become: no
-  local_action: get_url url={{ hadoop_download_url }} dest=files/ checksum="md5:{{ hadoop_md5 }}"
-  when: "hadoop_version != 'cdh4'"
+- name: get Hadoop distro
+  become: False
+  local_action: get_url url={{ hadoop_download_url }} dest=files/ checksum="sha512:{{ hadoop_sha512 }}"
 
-- name: get Hadoop distro (CDH4)
-  become: no
-  local_action: get_url url={{ hadoop_download_url }} dest=files/
-  when: "hadoop_version == 'cdh4'"
+# - name: get Hadoop distro (except CDH4)
+#   become: False
+#   local_action: get_url url={{ hadoop_download_url }} dest=files/ checksum="md5:{{ hadoop_sha512 }}"
+#   #local_action: get_url url={{ hadoop_download_url }} dest=files/ checksum="md5:{{ hadoop_md5 }}"
+#   when: "hadoop_version != 'cdh4'"
+
+# - name: get Hadoop distro (CDH4)
+#   become: False
+#   local_action: get_url url={{ hadoop_download_url }} dest=files/
+#   when: "hadoop_version == 'cdh4'"
 
 
 - name: distribute hadoop among slaves
@@ -36,8 +41,9 @@
   file: path=/usr/local/{{ hadoop_file }} owner={{ hadoop_user }} group=hadoop recurse=yes
 
 - name: get Spark distro
-  become: no
-  local_action: get_url url={{ spark_download_url }} dest=files/ checksum="md5:{{ spark_md5 }}"
+  become: False
+  local_action: get_url url={{ spark_download_url }} dest=files/ checksum="sha512:{{ spark_sha512 }}"
+  #local_action: get_url url={{ spark_download_url }} dest=files/ checksum="md5:{{ spark_md5 }}"
 
 #- name: put spark distro to master
 #  copy: src={{ spark_arch }} dest=/opt/
