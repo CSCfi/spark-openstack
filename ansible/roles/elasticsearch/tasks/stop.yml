@@ -1,6 +1,0 @@
----
-
-- name: stop ElasticSearch
-  systemd:
-    state: stopped
-    name: "elasticsearch.service"

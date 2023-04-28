@@ -1,2 +1,0 @@
-ignite_file: "apache-ignite-{{ignite_version}}-bin"
-ignite_home: "/opt/{{ignite_file}}"

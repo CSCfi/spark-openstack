@@ -3,17 +3,11 @@
 #export SPARK_LOCAL_DIRS="{{spark_local_dirs}}"
 export SPARK_LOCAL_DIRS="/tmp"
 
-# Standalone cluster options
-#export SPARK_MASTER_OPTS="{{spark_master_opts}}"
-#if [ -n "{{spark_worker_instances}}" ]; then
-#  export SPARK_WORKER_INSTANCES={{spark_worker_instances}}
-#fi
-export SPARK_WORKER_CORES={{spark_worker_cores}}
-
-export HADOOP_HOME="{{hadoop_home}}"
+export SPARK_HOME="{{ spark_home }}"
+export HADOOP_HOME="{{ hadoop_home }}"
 export HADOOP_CONF_DIR="{{ hadoop_home }}/etc/hadoop"
 export SPARK_MASTER_IP="{{ active_master_ip }}"
-export SPARK_MASTER_HOST="{{ active_master_ip }}"
+export SPARK_MASTER_HOST="{{ active_master }}"
 #export MASTER=`cat /root/spark-ec2/cluster-url`
 
 export SPARK_SUBMIT_LIBRARY_PATH="$SPARK_SUBMIT_LIBRARY_PATH:{{hadoop_home}}/lib/native/"

@@ -2,32 +2,67 @@
 
 #TODO: move to tasks/prepare_ubuntu.yml
 - name: set user and priviliges on spark
-  file: path={{ spark_home }} owner={{ hadoop_user }} group=hadoop recurse=yes
+  file: 
+    path: "{{ spark_home }}" 
+    owner: "{{ hadoop_user }}" 
+    group: hadoop 
+    recurse: true
 
 - name: distribute hadoop conf
-  template: src=templates/hadoop-env.sh.j2 dest={{ hadoop_home }}/etc/hadoop/hadoop-env.sh
+  template: 
+    src: templates/hadoop-env.sh.j2 
+    dest: "{{ hadoop_home }}/etc/hadoop/hadoop-env.sh"
 
 - name: distribute hadoop core-site.xml
-  template: src=templates/hadoop-core-site.xml.j2 dest={{ hadoop_home }}/etc/hadoop/core-site.xml
+  template: 
+    src: templates/hadoop-core-site.xml.j2 
+    dest: "{{ hadoop_home }}/etc/hadoop/core-site.xml"
 
 - name: distribute hadoop hdfs-site.xml
-  template: src=templates/hdfs-site.xml.j2 dest={{ hadoop_home }}/etc/hadoop/hdfs-site.xml
+  template: 
+    src: templates/hdfs-site.xml.j2 
+    dest: "{{ hadoop_home }}/etc/hadoop/hdfs-site.xml"
 
 - name: distribute hadoop yarn-site.xml
-  template: src=templates/etc-hadoop/yarn-site.xml.j2 dest={{ hadoop_home }}/etc/hadoop/yarn-site.xml
-  when: use_yarn
+  template: 
+    src: templates/etc-hadoop/yarn-site.xml.j2 
+    dest: "{{ hadoop_home }}/etc/hadoop/yarn-site.xml"
 
 - name: deploy slaves configuration
-  template: src=templates/slaves.j2 dest={{ spark_home }}/conf/slaves
+  template: 
+    src: templates/workers.j2 
+    dest: "{{ spark_home }}/conf/workers"
 
 - name: deploy spark-env.sh configuration
-  template: src=templates/spark-env.sh.j2 dest={{ spark_home }}/conf/spark-env.sh owner={{ hadoop_user }} group=hadoop
+  template: 
+    src: templates/spark-env.sh.j2 
+    dest: "{{ spark_home }}/conf/spark-env.sh" 
+    owner: "{{ hadoop_user }}"
+    group: hadoop
 
-- name: deploy spark-defaults.conf configuration
-  template: src=templates/spark/conf/spark-defaults.conf.j2 dest={{ spark_home }}/conf/spark-defaults.conf owner={{ hadoop_user }} group=hadoop
+# - name: deploy spark-defaults.conf configuration
+#   template: 
+#     src: templates/spark/conf/spark-defaults.conf.j2 
+#     dest: "{{ spark_home }}/conf/spark-defaults.conf" 
+#     owner: "{{ hadoop_user }}" 
+#     group: hadoop
+
+- name: deploy mapred-site.xml configuration
+  template:
+    src: templates/mapred-site.xml.j2
+    dest: "{{ hadoop_home }}/etc/hadoop/mapred-site.xml"
 
 - name: deploy copy-dir.sh
-  copy: src=files/copy-dir.sh dest=/home/{{ hadoop_user }}/copy-dir.sh owner={{ hadoop_user }} group=hadoop mode="ugo=rx"
+  copy: 
+    src: files/copy-dir.sh 
+    dest: "/home/{{ hadoop_user }}/copy-dir.sh" 
+    owner: "{{ hadoop_user }}" 
+    group: hadoop 
+    mode: "ugo=rx"
 
 - name: create dir for hdfs
-  file: path=/mnt/hdfs state=directory mode=0755 owner={{ hadoop_user }}
+  file: 
+    path: /mnt/hdfs 
+    state: directory 
+    mode: "0755" 
+    owner: "{{ hadoop_user }}"

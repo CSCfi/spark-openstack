@@ -110,3 +110,4 @@ packages.txt
 sandbox-openrc.sh
 ansible/files/keys/
 
+_bin/

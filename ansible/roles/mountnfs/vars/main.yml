@@ -1,3 +1,0 @@
----
-
-nfs_user: "{{ hadoop_user }}"
