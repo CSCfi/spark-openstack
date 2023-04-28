@@ -1,7 +1,0 @@
-#!/bin/bash
-
-cd "`dirname $0`/ansible"
-python ./spark_openstack_cmd.py "$@"
-
-# ./spark-openstack --create -k borisenko -i /home/al/.ssh/id_rsa -s 10 -t spark.large -a 8ac6a0eb-05c6-40a7-aeb7-551cb87986a2 -n abef0ea-4531-41b9-cba1-442ba1245632 -f public launch borisenko-cluster
-# python3 spark_openstack_cmd.py --create -k tristan-perard -i /Users/tperard/.ssh/tristan-perard.pem -s 1 -t standard.tiny -a fb772a38-ed02-407a-8649-41f55c6c076e -n c55bc796-841f-4704-a1a2-8f29bb9a699a -f public launch test-spark
