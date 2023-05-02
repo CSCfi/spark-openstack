@@ -64,7 +64,7 @@ Running
     * `-n <virtual-network>` - your virtual network name or ID (use `openstack network list`)
     * `-f <floating-ip-pool>` - floating IP pool name
     * `<cluster-name>` - name of the cluster (prefix 'surname' is a good practice)
-    * `--async` - launch Openstack instances in sync way
+    * `--sync` - launch Openstack instances in sync way
 
     With this command would be created cluster with choosed number of slaves. Arguments to Spark autodeploy:
 
