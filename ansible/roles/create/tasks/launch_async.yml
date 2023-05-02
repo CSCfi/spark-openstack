@@ -11,10 +11,11 @@
       flavor: "{{ master_flavor }}"
       key_name: "{{ os_key_name }}"
       network: "{{ virtual_network }}"
-      # boot_from_volume: "{{ boot_from_volume }}"
       security_groups: "{{ cluster_name }}"
       auto_ip: false
-      meta: "hostname={{ cluster_name }}-master,group={{ cluster_name }}_master"
+      meta: 
+        hostname: "{{ cluster_name }}-master"
+        group: "{{ cluster_name }}_master"
     retries: 3
     async: 300
     poll: 0
@@ -28,11 +29,15 @@
       flavor: "{{ flavor }}"
       key_name: "{{ os_key_name }}"
       network: "{{ virtual_network }}"
-      # boot_from_volume: "{{ boot_from_volume }}"
       security_groups: "{{ cluster_name }}"
       auto_ip: False
-      meta: "hostname={{ item }},group={{ cluster_name }}_slaves"
-    with_sequence: start=1 end={{ n_slaves }} format={{ cluster_name }}-slave-%d
+      meta: 
+        hostname: "{{ item }}"
+        group: "{{ cluster_name }}_slaves"
+    with_sequence: 
+      start: 1 
+      end: "{{ n_slaves }}" 
+      format: "{{ cluster_name }}-slave-%d"
     delay: 1
     retries: 3
     async: 300
@@ -76,7 +81,10 @@
       network: "{{ floating_ip_pool }}"
       wait: True
       timeout: 20
-    with_sequence: start=1 end={{ n_slaves }} format={{ cluster_name }}-slave-%d
+    with_sequence: 
+      start: 1 
+      end: "{{ n_slaves }}" 
+      format: "{{ cluster_name }}-slave-%d"
     retries: 3
     delay: 1
     async: 60
