@@ -2,18 +2,21 @@
 
 - name: acknowledge existing servers
   openstack.cloud.server_info:
+  register: instances
 
 - name: debug
-  set_fact: alive_servers="{{ alive_servers | default([]) | union([item.name]) }}"
-  when: item['metadata']['group'] is defined and (cluster_name + '_master' == item['metadata']['group'] or cluster_name + '_slaves' == item['metadata']['group'])
-  with_items: "{{ openstack_servers }}"
+  set_fact:
+    alive_servers: "{{ alive_servers | default([]) + [ item.name ] }}"
+  when: item.metadata['group'] is defined and (cluster_name + '_master' == item.metadata['group'] or cluster_name + '_slaves' == item.metadata['group'])
+  with_items: "{{ instances.servers }}"
   no_log: True
 
 - name: The following instances will be destroyed now
-  debug: var=alive_servers
+  debug: 
+    var: alive_servers
 
 - name: destroy cluster instances
-  os_server:
+  openstack.cloud.server:
     state: absent
     name: "{{ item }}"
   with_items: "{{ alive_servers }}"
