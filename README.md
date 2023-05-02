@@ -14,7 +14,8 @@ Installation
 
 1. Install Ansible.
 
-2. Install Ansible Collection Openstack Cloud: `ansible-galaxy collection install openstack.cloud`
+2. Install Ansible Collection Openstack Cloud:  
+   `ansible-galaxy collection install openstack.cloud`
 
 
 Configuration
@@ -34,7 +35,7 @@ Configuration
 
     WARNING - it's not secure; do not do that.
 
-2. Before running `./spark-openstack` this file must be sourced (once per shell session):
+2. Before running `./spark_openstack_cmd.py` this file must be sourced (once per shell session):
 
         source /path/to/your/<project>-openrc.sh
 
@@ -55,12 +56,13 @@ Running
 
     replacing <xxx> with values of:
 
-    * `<key-pair-name>` - key pair name
-    * `<private-key>` - path to private key file
-    * `<n-slaves>` - number of slaves
-    * `<instance-type>` - instance flavor that exists in your Openstack environment (e.g. spark.large)
-    * `<virtual-network>` - your virtual network name or ID (in Neutron or Nova-networking)
-    * `<floating-ip-pool>` - floating IP pool name
+    * `-k <key-pair-name>` - key pair name
+    * `-i <private-key>` - path to private key file
+    * `-s <n-slaves>` - number of slaves
+    * `-t <instance-type>` - instance flavor that exists in your Openstack environment (e.g. spark.large)
+    * `-a <os-image-id>` - image id that exists in your Openstack environment (use `openstack image list` to check the id)
+    * `-n <virtual-network>` - your virtual network name or ID (use `openstack network list`)
+    * `-f <floating-ip-pool>` - floating IP pool name
     * `<cluster-name>` - name of the cluster (prefix 'surname' is a good practice)
 
     With this command would be created cluster with choosed number of slaves. Arguments to Spark autodeploy:
@@ -78,12 +80,12 @@ Running
 
     Example:
     ```sh
-    ./spark_openstack_cmd.py --create --deploy-spark -k mykeypair -i /home/al/.ssh/id_rsa -s 3 \
-    -t standard.large -a 07c6f4c1-97ae-481e-abfb-e799ec52caf7 -n c55bc796-841f-4704-a1a2-8f29bb9a699a -f public \
+    ./spark_openstack_cmd.py --create --deploy-spark -k mykeypair -i /home/user/.ssh/id_rsa -s 3 \
+    -t standard.large -a 98cd62f6-5be2-4f80-a17c-fc11a22a78f3 -n c55bc796-841f-4704-a1a2-8f29bb9a699a -f public \
     launch spark-cluster
     ```
 
-* To destroy a cluster, run (**NOT TESTED**)
+* To destroy a cluster, run
 
         ./spark_openstack_cmd.py -k <key-pair-name> -i <private-key> -s <n-slaves> \
            -t <instance-type> -a <os-image-id> destroy <cluster-name>
