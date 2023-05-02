@@ -34,10 +34,7 @@
       meta: 
         hostname: "{{ item }}"
         group: "{{ cluster_name }}_slaves"
-    with_sequence: 
-      start: 1 
-      end: "{{ n_slaves }}" 
-      format: "{{ cluster_name }}-slave-%d"
+    with_sequence: start=1 end="{{ n_slaves }}" format="{{ cluster_name }}-slave-%d"
     delay: 1
     retries: 3
     async: 300
@@ -81,10 +78,7 @@
       network: "{{ floating_ip_pool }}"
       wait: True
       timeout: 20
-    with_sequence: 
-      start: 1 
-      end: "{{ n_slaves }}" 
-      format: "{{ cluster_name }}-slave-%d"
+    with_sequence: start=1 end="{{ n_slaves }}" format="{{ cluster_name }}-slave-%d"
     retries: 3
     delay: 1
     async: 60
