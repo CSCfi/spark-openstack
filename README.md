@@ -108,16 +108,19 @@ Important notes
 
 Ansible: 2.14.5
 
-Python: 3.11
+Python:
+* 3.10.6
+* 3.11
 
 Python Openstack SDK: 1.0.1
 
 Ansible Collection Openstack Cloud 1.10.0
 
-Management machine OS: macOS Ventura
+Management machine OS: 
+* macOS Ventura
+* Ubuntu 22.04
 
 Guest OS:
-
 * Ubuntu 22.04
 
 
