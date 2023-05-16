@@ -76,6 +76,7 @@
     direction: egress
     protocol: any
     remote_ip_prefix: 0.0.0.0/0
+  when: ansible_facts['distribution'] == "MacOSX"
 
 - openstack.cloud.security_group_rule:
     security_group: "{{ cluster_name }}"
@@ -83,4 +84,4 @@
     direction: egress
     protocol: any
     remote_ip_prefix: ::/0
-    
+  when: ansible_facts['distribution'] == "MacOSX"  
