@@ -24,23 +24,12 @@ Configuration
 1. Download (unless already done so) <project-name>-openrc.sh from your Openstack Web UI
     (Project > Compute > Access & Security > API Access > Download OpenStack RC File)
 
-    If you don't want to enter password each time and don't care about security, replace
-
-        read -sr OS_PASSWORD_INPUT
-        export OS_PASSWORD=$OS_PASSWORD_INPUT
-
-    with (replace &lt;password&gt; with your password)
-
-        export OS_PASSWORD="<password>"
-
-    WARNING - it's not secure; do not do that.
-
 2. Before running `./spark_openstack_cmd.py` this file must be sourced (once per shell session):
 
         source /path/to/your/<project>-openrc.sh
 
 3. Download/upload key pair.
-    You'll need both the name of key pair (Key Pair Name column in  Access & Security > Key Pairs) and prite key file.
+    You'll need both the name of key pair (Key Pair Name column in  Access & Security > Key Pairs) and private key file.
     Make sure that only user can read private key file (`chmod og= <key-file-name>`).
     Make sure private key does **not** have a passphrase.
 
