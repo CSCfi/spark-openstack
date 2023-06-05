@@ -1,0 +1,39 @@
+---
+
+- hosts: localhost
+  tasks:
+    - include_role:
+        name: create
+      when: create_cluster is defined and create_cluster == true or act == "destroy"
+    - include_role:
+        name: os_facts
+      when: act != "destroy"
+
+    - debug: var=create_cluster
+
+- hosts: "{{ cluster_name }}_master:{{ cluster_name }}_slaves"
+  tasks:
+    - include_role:
+        name: deploy_ssh
+      vars:
+        hadoop_user: ubuntu
+      when: create_cluster is defined and create_cluster == true
+
+
+- hosts: "{{ cluster_name }}_master:{{ cluster_name }}_slaves"
+  become: yes
+  tasks:
+    - name: install base
+      include_role:
+        name: basic
+      when: create_cluster is defined and create_cluster == true
+    - name: install Spark
+      include_role:
+        name: spark_common
+      when: deploy_spark
+
+- hosts: "{{ cluster_name }}_master"
+  tasks:
+    - include_role:
+        name: spark_master
+      when: deploy_spark

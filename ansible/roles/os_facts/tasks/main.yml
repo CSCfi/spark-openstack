@@ -1,0 +1,41 @@
+---
+
+- name: Register master facts
+  openstack.cloud.server_info:
+    filters:
+      metadata:
+        group: "{{ item }}"
+  register: master
+  with_items:
+    - "{{ cluster_name }}_master"
+
+- name: Make up master inventory
+  add_host:
+    name: "{{ item.name }}"
+    groups: "{{ cluster_name }}_master"
+    ansible_host: "{{ item.access_ipv4 }}"
+    ansible_user: "ubuntu"
+    openstack: "{{ item.id }}"
+  with_items:
+    - "{{ master.results[0].servers }}"
+
+
+
+- name: Register slaves facts
+  openstack.cloud.server_info:
+    filters:
+      metadata:
+        group: "{{ item }}"
+  register: slave
+  with_items:
+    - "{{ cluster_name }}_slaves"
+
+- name: Make up slaves inventory
+  add_host:
+    name: "{{ item.name }}"
+    groups: "{{ cluster_name }}_slaves"
+    ansible_host: "{{ item.access_ipv4 }}"
+    ansible_user: "ubuntu"
+    openstack: "{{ item.id }}"
+  with_items:
+    - "{{ slave.results[0].servers }}"

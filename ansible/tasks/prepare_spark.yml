@@ -1,0 +1,78 @@
+---
+
+- name: get Hadoop distro
+  become: False
+  local_action: 
+    module: get_url 
+    url: "{{ hadoop_download_url }}" 
+    dest: files/ 
+    checksum: sha512:{{ hadoop_sha512 }}
+
+- name: distribute hadoop among slaves
+  synchronize:
+    src: "files/{{ hadoop_file }}.tar.gz"
+    dest: "/usr/local/{{ hadoop_file }}.tar.gz"
+    checksum: yes
+#  delegate_to: "{{ active_master_inventory_hostname }}"
+
+- name: unzip hadoop
+  unarchive: 
+    copy: no
+    src: /usr/local/{{ hadoop_file }}.tar.gz 
+    dest: /usr/local/ 
+    owner: "{{ hadoop_user }}" 
+    group: hadoop
+
+- name: create hadoop symlink
+  file: 
+    src: /usr/local/{{ hadoop_file }} 
+    dest: /usr/local/hadoop 
+    state: link
+
+- name: set user and priviliges on hadoop
+  file: 
+    path: /usr/local/{{ hadoop_file }} 
+    owner: "{{ hadoop_user }}" 
+    group: hadoop 
+    recurse: true
+
+- name: get Spark distro
+  become: False
+  local_action: 
+    module: get_url 
+    url: "{{ spark_download_url }}" 
+    dest: files/ 
+    checksum: sha512:{{ spark_sha512 }}
+
+- name: distribute spark distro among slaves
+  synchronize:
+    src: files/{{ spark_file }}.tgz
+    dest: /opt/{{ spark_file }}.tgz
+    checksum: yes
+#  delegate_to: "{{ active_master_inventory_hostname }}"
+
+- name: unzip spark
+  unarchive: 
+    copy: false 
+    src: /opt/{{ spark_file }}.tgz 
+    dest: /opt
+
+- name: create spark symlink
+  file: 
+    src: "{{ spark_home }}" 
+    dest: /opt/spark 
+    state: link
+
+- name: create spark symlink
+  file: 
+    src: "{{ spark_home }}" 
+    dest: /usr/local/spark 
+    state: link
+
+
+- name: create extra jars directory
+  file: 
+    path: "{{ spark_extra_jars_dir }}" 
+    owner: "{{ hadoop_user }}" 
+    group: hadoop 
+    state: directory

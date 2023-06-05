@@ -1,0 +1,103 @@
+---
+- pause:
+    echo: false
+    seconds: 10
+    
+- name: create directory for ssh-keys if doesn't exist
+  local_action: 
+    module: file 
+    path: files/keys 
+    state: directory
+  tags: prepare
+
+# - name: Display all variables/facts known for a host
+#   debug:
+#     var: hostvars[inventory_hostname]
+
+- name: Check if instances really got floating IPs
+  local_action: 
+    module: fail 
+    msg: "One of the instances didn't get floating IP address"
+  when: hostvars[inventory_hostname].ansible_host == '' and floating_ip_pool != 'None'
+#  fail: msg="One of the instances didn't get floating IP address"
+  tags: prepare
+
+- name: Wait for ssh-server to start
+  local_action:
+    module: wait_for
+    host: "{{ hostvars[inventory_hostname].ansible_host }}"
+    port: "22"
+    search_regex: OpenSSH
+    delay: "3"
+    timeout: "300"
+  #    - debug: msg="Checking ssh for {{ hostvars[inventory_hostname].openstack.public_v4 }}"
+  tags: prepare
+  when: floating_ip_pool != 'None'
+
+- name: generating key for hadoop user
+  user: 
+    name: "{{ hadoop_user }}" 
+    generate_ssh_key: true
+  # when: inventory_hostname == active_master_inventory_hostname
+  when: inventory_hostname == active_master
+  tags: prepare
+
+- name: get the public key
+  fetch: 
+    src: /home/{{ hadoop_user }}/.ssh/id_rsa.pub
+    dest: files/keys/{{ cluster_name }}.pub 
+    flat: true
+  # when: inventory_hostname == active_master_inventory_hostname
+  when: inventory_hostname == active_master
+  tags: prepare
+
+- name: get the private key
+  fetch: 
+    src: /home/{{ hadoop_user }}/.ssh/id_rsa 
+    dest: files/keys/{{ cluster_name }} 
+    flat: true
+  # when: inventory_hostname == active_master_inventory_hostname
+  when: inventory_hostname == active_master
+  tags: prepare
+
+- name: deploy authorized keys
+  become: true
+  become_user: root
+  authorized_key: 
+    user: "{{ hadoop_user }}"
+    key: "{{ lookup('file', 'files/keys/{{ cluster_name }}.pub') }}"
+  tags: prepare
+
+- name: deploy ssh-keys
+  become: true
+  become_user: root
+  copy: 
+    src: files/keys/{{ cluster_name }} 
+    dest: /home/{{ hadoop_user }}/.ssh/{{ cluster_name }}
+  tags: prepare
+
+- name: distribute ssh config
+  become: true
+  become_user: root
+  template: 
+    src: templates/config.j2 
+    dest: /home/{{ hadoop_user }}/.ssh/config
+  tags: prepare
+
+# - name: Display all variables/facts known for a host
+#   debug:
+#     var: hostvars[item]
+#   with_items: "{{ play_hosts }}"
+
+# - pause:
+
+- name: modify /etc/hosts
+  become: true
+  become_user: root
+  lineinfile: 
+    dest: /etc/hosts 
+    state: present 
+    line: "{{ hostvars[item].ansible_default_ipv4.address }} {{ hostvars[item].ansible_hostname }}"
+  with_items: "{{ play_hosts }}"
+    #  template: src=templates/hosts.j2 dest=/etc/hosts
+  tags: prepare

@@ -1,5 +1,0 @@
----
-
-- template: src=init.d-jupyter.j2 dest=/etc/init.d/jupyter mode=0751
-
-- service: name=jupyter state=started enabled=yes

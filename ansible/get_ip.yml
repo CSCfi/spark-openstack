@@ -1,0 +1,12 @@
+---
+
+- hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: Register master facts
+      openstack.cloud.server_info:
+        filters:
+          metadata:
+            group: "{{ cluster_name }}_{{ extended_role }}"
+      register: master
+    - debug: msg="{{ master.servers[0].access_ipv4 }}"

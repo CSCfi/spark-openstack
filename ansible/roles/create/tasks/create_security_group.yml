@@ -1,0 +1,87 @@
+---
+
+- name: create security group
+  openstack.cloud.security_group:
+    state: present
+    name: "{{ cluster_name }}"
+    description: "Security group for Spark cluster + {{ cluster_name }}"
+
+- openstack.cloud.security_group_rule:
+    security_group: "{{ cluster_name }}"
+    protocol: icmp
+    remote_group: "{{ cluster_name }}"
+
+- openstack.cloud.security_group_rule:
+    security_group: "{{ cluster_name }}"
+    protocol: tcp
+    remote_group: "{{ cluster_name }}"
+
+- openstack.cloud.security_group_rule:
+    security_group: "{{ cluster_name }}"
+    protocol: udp
+    remote_group: "{{ cluster_name }}"
+
+- openstack.cloud.security_group_rule:
+    security_group: "{{ cluster_name }}"
+    protocol: tcp
+    port_range_min: 8080
+    port_range_max: 8080
+    remote_ip_prefix: 0.0.0.0/0
+
+- openstack.cloud.security_group_rule:
+    security_group: "{{ cluster_name }}"
+    protocol: tcp
+    port_range_min: 8081
+    port_range_max: 8081
+    remote_ip_prefix: 0.0.0.0/0
+
+- openstack.cloud.security_group_rule:
+    security_group: "{{ cluster_name }}"
+    protocol: tcp
+    port_range_min: 7077
+    port_range_max: 7077
+    remote_ip_prefix: 0.0.0.0/0
+
+- openstack.cloud.security_group_rule:
+    security_group: "{{ cluster_name }}"
+    protocol: tcp
+    port_range_min: 4040
+    port_range_max: 4040
+    remote_ip_prefix: 0.0.0.0/0
+
+- openstack.cloud.security_group_rule:
+    security_group: "{{ cluster_name }}"
+    protocol: tcp
+    port_range_min: 18080
+    port_range_max: 18080
+    remote_ip_prefix: 0.0.0.0/0
+
+- openstack.cloud.security_group_rule:
+    security_group: "{{ cluster_name }}"
+    protocol: tcp
+    port_range_min: 9870
+    port_range_max: 9870
+    remote_ip_prefix: 0.0.0.0/0
+    
+- openstack.cloud.security_group_rule:
+    security_group: "{{ cluster_name }}"
+    protocol: tcp
+    port_range_min: 22
+    port_range_max: 22
+    remote_ip_prefix: 0.0.0.0/0
+
+## default Security Group
+- openstack.cloud.security_group_rule:
+    security_group: "{{ cluster_name }}"
+    direction: egress
+    protocol: any
+    remote_ip_prefix: 0.0.0.0/0
+  when: ansible_facts['distribution'] == "MacOSX"
+
+- openstack.cloud.security_group_rule:
+    security_group: "{{ cluster_name }}"
+    ethertype: IPv6
+    direction: egress
+    protocol: any
+    remote_ip_prefix: ::/0
+  when: ansible_facts['distribution'] == "MacOSX"  
