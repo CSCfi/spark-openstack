@@ -50,8 +50,11 @@
   - install
   - spark_install
 
-- import_tasks: detect_java_home.yml
-  when: spark_common_completed is undefined
+- import_tasks: detect_java_home_ubuntu.yml
+  when: spark_common_completed is undefined and ansible_os_family == "Debian"
+
+- import_tasks: detect_java_home_redhat.yml
+  when: spark_common_completed is undefined and ansible_os_family == "RedHat"
 
 - import_tasks: as_root.yml
   become: True

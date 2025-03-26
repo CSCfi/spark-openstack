@@ -3,9 +3,16 @@
 spark_download_base_url: "http://archive.apache.org/dist/spark/"
 hadoop_vars:
   "3.3":
-    url: "http://archive.apache.org/dist/hadoop/common/hadoop-3.3.5/hadoop-3.3.5.tar.gz"
-    archived_name: "hadoop-3.3.5.tar.gz"
-    folder_name: "hadoop-3.3.5"
+    url: "https://archive.apache.org/dist/hadoop/common/hadoop-3.3.0/hadoop-3.3.0.tar.gz"
+    archived_name: "hadoop-3.3.0.tar.gz"
+    folder_name: "hadoop-3.3.0"
+    suffix: "hadoop3"
+    swift_lib_url: False
+    swift_lib_name: False
+  "3.4.1":
+    url: "http://archive.apache.org/dist/hadoop/common/hadoop-3.4.1/hadoop-3.4.1.tar.gz"
+    archived_name: "hadoop-3.4.1.tar.gz"
+    folder_name: "hadoop-3.4.1"
     suffix: "hadoop3"
     swift_lib_url: False
     swift_lib_name: False

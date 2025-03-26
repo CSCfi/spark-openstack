@@ -16,7 +16,7 @@
     - include_role:
         name: deploy_ssh
       vars:
-        hadoop_user: ubuntu
+        hadoop_user: "{{ ansible_user }}"
       when: create_cluster is defined and create_cluster == true
 
 

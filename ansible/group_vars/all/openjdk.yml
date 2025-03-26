@@ -1,1 +1,2 @@
-java_package: "openjdk-8-jdk-headless"
+java_package_debian: "openjdk-8-jdk-headless"
+java_package_redhat: "java-1.8.0-openjdk-headless"
