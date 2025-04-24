@@ -48,7 +48,7 @@ Running
     * `-k <key-pair-name>` - key pair name
     * `-i <private-key>` - path to private key file
     * `-s <n-slaves>` - number of slaves
-    * `-t <instance-type>` - instance flavor that exists in your Openstack environment (e.g. spark.large)
+    * `-t <instance-type>` - instance flavor that exists in your Openstack environment (e.g. standard.large)
     * `-a <os-image-id>` - image id that exists in your Openstack environment (use `openstack image list` to check the id)
     * `-n <virtual-network>` - your virtual network name or ID (use `openstack network list`)
     * `-f <floating-ip-pool>` - floating IP pool name
