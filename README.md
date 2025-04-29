@@ -48,7 +48,7 @@ Running
     * `-k <key-pair-name>` - key pair name
     * `-i <private-key>` - path to private key file
     * `-s <n-slaves>` - number of slaves
-    * `-t <instance-type>` - instance flavor that exists in your Openstack environment (e.g. spark.large)
+    * `-t <instance-type>` - instance flavor that exists in your Openstack environment (e.g. standard.large)
     * `-a <os-image-id>` - image id that exists in your Openstack environment (use `openstack image list` to check the id)
     * `-n <virtual-network>` - your virtual network name or ID (use `openstack network list`)
     * `-f <floating-ip-pool>` - floating IP pool name
@@ -61,7 +61,8 @@ Running
 
     Spark-specific optional arguments:
 
-    * `--spark-version <version>` use specific Spark version. Default is 3.4.0.
+    * `--hadoop-user`: use specific Hadoop user. By default `ubuntu`. If you deploy this on cPouta Almalinux, use `almalinux`
+    * `--spark-version <version>` use specific Spark version. Default is 3.5.5. Version 3.4.0 can also be deployed
     * `--hadoop-version <version>` use specific Hadoop version for Spark. Default is the latest supported in Spark.
     * `--spark-worker-mem-mb <mem>` don't auto-detect spark worker memory and use specified value, can be useful if other
         processes on slave nodes (e.g. python) need more memory, default for 10Gb-20Gb RAM slaves is to leave 2Gb to
@@ -100,19 +101,26 @@ Ansible: 2.14.5
 Python:
 * 3.10.6
 * 3.11
+* 3.13.2
 
 Python Openstack SDK: 1.0.1
 
-Ansible Collection Openstack Cloud 1.10.0
+Ansible Collection Openstack Cloud:
+* 1.10.0
+* 2.4.1
 
 Management machine OS: 
 * macOS Ventura
+* macOS Sequoia
 * Ubuntu 22.04
 
 Guest OS:
 * Ubuntu 22.04
+* Ubuntu 24.04
+* Almalinux 9
 
 
 ## Known issues
 
 * Limited support for security groups in Openstack. Current rules allow all the traffic ingress and egress. PLEASE MODIFY THESE SECURITY GROUPS TO ALLOW THE IP SUBNETS WHICH SHOULD HAVE ACCESS TO CLUSTER.
+* When deploying with Almalinux 9, accessing the web interface and click on the worker link doesn't work. Simply use the floating IP of the worker to access it (http://worker:8081)

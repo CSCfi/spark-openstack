@@ -4,7 +4,14 @@
   become: true
   apt: 
     update_cache: true
-  when: not skip_packages | default(False)
+  when: not (skip_packages | default(False)) and ansible_os_family == "Debian"
+  retries: 2
+
+- name: update yum cache
+  become: true
+  yum: 
+    update_cache: true
+  when: not (skip_packages | default(False)) and ansible_os_family == "RedHat"
   retries: 2
 
 - name: install packages
@@ -19,11 +26,16 @@
 - name: install Java
   become: true
   package: 
-    name: "{{ java_package }}" 
+    name: "{{ java_package_debian }}" 
     state: present
-  when: not skip_packages | default(False)
+  when: not (skip_packages | default(False)) and ansible_os_family == "Debian"
 
-
+- name: install Java
+  become: true
+  package: 
+    name: "{{ java_package_redhat }}" 
+    state: present
+  when: not (skip_packages | default(False)) and ansible_os_family == "RedHat"
 
 - name: disable net.ipv6.conf.all.disable_ipv6
   become: true

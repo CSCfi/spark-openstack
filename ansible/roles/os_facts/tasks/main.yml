@@ -14,7 +14,7 @@
     name: "{{ item.name }}"
     groups: "{{ cluster_name }}_master"
     ansible_host: "{{ item.access_ipv4 }}"
-    ansible_user: "ubuntu"
+    ansible_user: "{{ hadoop_user }}"
     openstack: "{{ item.id }}"
   with_items:
     - "{{ master.results[0].servers }}"
@@ -35,7 +35,7 @@
     name: "{{ item.name }}"
     groups: "{{ cluster_name }}_slaves"
     ansible_host: "{{ item.access_ipv4 }}"
-    ansible_user: "ubuntu"
+    ansible_user: "{{ hadoop_user  }}"
     openstack: "{{ item.id }}"
   with_items:
     - "{{ slave.results[0].servers }}"

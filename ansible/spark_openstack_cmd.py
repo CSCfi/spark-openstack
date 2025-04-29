@@ -17,6 +17,7 @@ from urllib.parse import urlparse
 spark_versions = \
     {
         "3.4.0": {"hadoop_versions": ["3.3"]},
+        "3.5.5": {"hadoop_versions": ["3.4.1"]},
     }
 
 parser = argparse.ArgumentParser(description='Spark cluster deploy tools for Openstack.',
@@ -42,7 +43,7 @@ parser.add_argument("-w", help="ignored")
 
 parser.add_argument("--create", action="store_true", help="Note that cluster should be created")
 parser.add_argument("--deploy-spark", action="store_true", help="Should we deploy Spark (with Hadoop)")
-parser.add_argument("--spark-version", default="3.4.0", help="Spark version to use")
+parser.add_argument("--spark-version", default="3.5.5", help="Spark version to use")
 parser.add_argument("--hadoop-version", help="Hadoop version to use")
 parser.add_argument("--hadoop-user", default="ubuntu", help="User to use/create for cluster members")
 parser.add_argument("--ansible-bin", help="path to ansible (and ansible-playbook, default='')")

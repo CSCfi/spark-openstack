@@ -56,7 +56,7 @@
         groups: "{{ cluster_name }}_runner"
         ansible_host: "{{ item.public_v4 }}"
         ansible_ssh_host: "{{ item.interface_ip }}"
-        ansible_user: "ubuntu"
+        ansible_user: "{{ hadoop_user }}"
         openstack: "{{ item }}"
       with_items:
         - "{{ openstack_servers }}"
@@ -93,4 +93,4 @@
       become: no
       git:
         repo: "https://github.com/ispras/spark-openstack.git"
-        dest: "/home/ubuntu/spark-openstack/"
+        dest: "/home/{{ ansible_user }}/spark-openstack/"

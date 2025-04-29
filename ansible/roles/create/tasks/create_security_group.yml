@@ -68,20 +68,4 @@
     protocol: tcp
     port_range_min: 22
     port_range_max: 22
-    remote_ip_prefix: 0.0.0.0/0
-
-## default Security Group
-- openstack.cloud.security_group_rule:
-    security_group: "{{ cluster_name }}"
-    direction: egress
-    protocol: any
-    remote_ip_prefix: 0.0.0.0/0
-  when: ansible_facts['distribution'] == "MacOSX"
-
-- openstack.cloud.security_group_rule:
-    security_group: "{{ cluster_name }}"
-    ethertype: IPv6
-    direction: egress
-    protocol: any
-    remote_ip_prefix: ::/0
-  when: ansible_facts['distribution'] == "MacOSX"  
+    remote_ip_prefix: 0.0.0.0/0  
